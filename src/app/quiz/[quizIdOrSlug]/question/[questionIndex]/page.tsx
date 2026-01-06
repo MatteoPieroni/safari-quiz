@@ -79,7 +79,7 @@ export default async function Category({
         ) : (
           <span></span>
         )}
-        {next?.id && <Link href={`./${next.index}`}>Next</Link>}
+        {next?.id ? <Link href={`./${next.index}`}>Next</Link> : <span></span>}
       </div>
     </>
   );

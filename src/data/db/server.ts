@@ -1,30 +1,20 @@
 import { add, formatISO, isAfter } from 'date-fns';
 
-import { createClient as createServerClient } from '@/utils/supabase/server';
+import { createServerClient } from '@/utils/supabase/server';
 import type { Database } from '../supabase-generated';
 
 const signedImageDuration = 60 * 60 * 24 * 7;
 
-export const getQuizzes = async () => {
+export const getQuizFirstQuestion = async (quizSlug: string) => {
   const supabase = await createServerClient();
 
-  const { data, error } = await supabase.from('quiz').select();
-
-  if (error || !data.length) {
-    throw error;
-  }
-
-  return data;
-};
-
-export const getQuizQuestions = async (quizId: number) => {
-  const supabase = await createServerClient();
-
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('quiz_questions')
-    .select()
-    .eq('quiz', quizId)
-    .order('index');
+    .select('index, quiz!inner()')
+    .eq('quiz.name', quizSlug)
+    .order('index')
+    .limit(1)
+    .single();
 
   return data;
 };
