@@ -1,0 +1,183 @@
+.card {
+  position: relative;
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: hidden;
+
+  border-radius: 20px;
+  padding: 1.5rem 1rem;
+  background-color: var(--card-background);
+  color: var(--card-text);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-radius: 50%;
+    width: 1px;
+    height: 1px;
+    z-index: 0;
+  }
+}
+
+@keyframes circleOut {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(2000);
+  }
+}
+
+@keyframes horizontal-shaking {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(5px);
+  }
+  20% {
+    transform: translateX(-5px);
+  }
+  30% {
+    transform: translateX(5px);
+  }
+  40% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-5px);
+  }
+  70% {
+    transform: translateX(5px);
+  }
+  80% {
+    transform: translateX(-5px);
+  }
+  90% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-up-down {
+  from,
+  to {
+    transform: scale(1);
+  }
+  25%,
+  75% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+
+.cardError,
+.cardSuccess {
+  &:before {
+    transform: scale(1000);
+    animation: circleOut 0.65s cubic-bezier(0, 0, 0.2, 1) forwards;
+  }
+}
+
+.cardSuccess {
+  /* animation: scale-up-down 0.25s forwards; */
+  &:before {
+    background-color: var(--success-background);
+    color: var(--success-text);
+  }
+}
+
+.cardError {
+  animation: horizontal-shaking 0.5s forwards;
+  &:before {
+    background-color: var(--error-background);
+    color: var(--error-text);
+  }
+}
+
+.question,
+.answer {
+  z-index: 1;
+}
+
+.question,
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inputAndMicContainer {
+  display: flex;
+  gap: 0.5rem;
+  align-items: end;
+
+  & > label {
+    width: 100%;
+  }
+}
+
+.micButton {
+  width: auto;
+  border-radius: 50%;
+}
+
+.img {
+  corner-shape: squircle;
+  border-radius: 30px;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+}
+
+.audioContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  height: 100%;
+  width: 100%;
+}
+
+.audioIcon {
+  width: 35%;
+  height: auto;
+  filter: drop-shadow(0px 3px 4px rgba(255, 255, 255, 0.5));
+}
+
+.audio {
+  width: 100%;
+}
+
+.answer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 1.5em;
+}
+
+.answerText {
+  font-size: 1.25em;
+}
+
+.button {
+  width: 100%;
+  font-size: 1.5em;
+  background-color: var(--button-background);
+  color: var(--button-text);
+}

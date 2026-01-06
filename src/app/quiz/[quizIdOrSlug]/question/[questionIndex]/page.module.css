@@ -1,0 +1,50 @@
+.header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.icon {
+  padding: 0.5rem;
+  border: 2px solid var(--text);
+  border-radius: 4px;
+  color: var(--text);
+}
+
+.progress {
+  width: 100%;
+  padding-inline: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 500;
+}
+
+.progress progress[value] {
+  position: relative;
+  width: 100%;
+  font-weight: bold;
+  appearance: none;
+
+  &::-webkit-progress-bar {
+    border-radius: 4px;
+    background: var(--primary-background);
+  }
+
+  &::-webkit-progress-value {
+    border-radius: 4px;
+    background: var(--primary);
+  }
+}
+
+.steppers {
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 1rem;
+  width: 100%;
+  font-weight: 500;
+}
