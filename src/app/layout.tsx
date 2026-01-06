@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Fredoka } from 'next/font/google';
+
 import './globals.css';
 
 const fredoka = Fredoka({ subsets: ['latin'] });

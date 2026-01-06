@@ -109,6 +109,10 @@ h6 {
   }
 }
 
+main {
+  margin-inline: var(--side-margin);
+}
+
 a {
   color: var(--primary);
 }
