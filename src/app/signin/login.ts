@@ -3,10 +3,10 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { createClient } from '@/utils/supabase/server';
+import { createServerClient } from '@/utils/supabase/server';
 
 export async function login(formData: FormData) {
-  const supabase = await createClient();
+  const supabase = await createServerClient();
 
   const email = formData.get('email');
   const password = formData.get('password');
