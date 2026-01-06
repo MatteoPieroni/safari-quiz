@@ -16,9 +16,9 @@ import { ShuffleIcon } from '@/components/icons/shuffle';
 export default async function Home() {
   return (
     <main className={homeStyles.main}>
-      <h1 className={homeStyles.header}>Wildlife Quiz</h1>
+      <h1>Wildlife Quiz</h1>
 
-      <nav className={homeStyles.nav} aria-labelledby="nav-title">
+      <nav aria-labelledby="nav-title">
         <h2 id="nav-title">Individual sections</h2>
         <ul className={homeStyles.linkList}>
           <li>

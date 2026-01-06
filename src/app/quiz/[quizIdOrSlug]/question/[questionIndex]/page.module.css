@@ -5,7 +5,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding-block: 0.5rem;
 }
 
 .icon {
@@ -17,7 +17,6 @@
 
 .progress {
   width: 100%;
-  padding-inline: 1rem;
   display: flex;
   align-items: center;
   gap: 1rem;
