@@ -5,16 +5,23 @@ import type { Database } from '../supabase-generated';
 
 const signedImageDuration = 60 * 60 * 24 * 7;
 
-export const getQuizFirstQuestion = async (quizSlug: string) => {
+export const getQuizFirstQuestion = async (quizIdOrSlug: string) => {
   const supabase = await createServerClient();
 
-  const { data, error } = await supabase
-    .from('quiz_questions')
-    .select('index, quiz!inner()')
-    .eq('quiz.name', quizSlug)
-    .order('index')
-    .limit(1)
-    .single();
+  const typedQuizId = !Number.isNaN(+quizIdOrSlug)
+    ? +quizIdOrSlug
+    : quizIdOrSlug;
+
+  const query = supabase.from('quiz_questions').select('index, quiz!inner()');
+
+  const queryFilteredByQuiz =
+    typeof typedQuizId === 'string'
+      ? query.eq('quiz.name', typedQuizId)
+      : query.eq('quiz.id', typedQuizId);
+
+  const orderedQuery = queryFilteredByQuiz.order('index');
+
+  const { data, error } = await orderedQuery.limit(1).single();
 
   return data;
 };
