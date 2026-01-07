@@ -26,6 +26,27 @@ export const getQuizFirstQuestion = async (quizIdOrSlug: string) => {
   return data;
 };
 
+export const getQuizQuestionsCount = async (quizIdOrSlug: string) => {
+  const supabase = await createServerClient();
+
+  const typedQuizId = !Number.isNaN(+quizIdOrSlug)
+    ? +quizIdOrSlug
+    : quizIdOrSlug;
+
+  const query = supabase
+    .from('quiz_questions')
+    .select('quiz!inner()', { count: 'exact' });
+
+  const queryFilteredByQuiz =
+    typeof typedQuizId === 'string'
+      ? query.eq('quiz.name', typedQuizId)
+      : query.eq('quiz.id', typedQuizId);
+
+  const count = (await queryFilteredByQuiz).count;
+
+  return count;
+};
+
 export const getSpeciesFromQuizQuestion = async (
   quizIdOrSlug: string,
   questionIndex: number
@@ -40,38 +61,55 @@ export const getSpeciesFromQuizQuestion = async (
     .from('quiz_questions')
     .select(
       '*, quiz!inner(title, id), species!inner(name, image_file, track_file, sound_file, nest_file), temp_hints(*)',
-      {
-        count: 'exact',
-      }
+      { count: 'exact' }
     );
   const queryFilteredByQuiz =
     typeof typedQuizId === 'string'
       ? query.eq('quiz.name', typedQuizId)
       : query.eq('quiz.id', typedQuizId);
 
-  const orderedQuery = queryFilteredByQuiz.order('index');
+  // const count = (await queryFilteredByQuiz).count;
 
-  let filteredQuery: typeof orderedQuery | undefined = undefined;
+  let filteredQuery: typeof queryFilteredByQuiz | undefined = undefined;
 
   // if index === 0, we're at the first question, so we only take the current and next
   if (questionIndex === 0) {
-    filteredQuery = orderedQuery.limit(2);
+    filteredQuery = queryFilteredByQuiz.or(`index.eq.0,index.eq.1`);
   } else {
     // if index > 0, then we start taking at the previous index and take only 3, to give back [previous, current, next]
     const previousQuestionIndex = questionIndex - 1;
+    const nextQuestionIndex = questionIndex + 1;
 
-    filteredQuery = orderedQuery.gte('index', previousQuestionIndex).limit(3);
+    filteredQuery = queryFilteredByQuiz
+      .or(
+        `index.eq.${previousQuestionIndex},index.eq.${questionIndex},index.eq.${nextQuestionIndex}`
+      )
+      .order('index');
   }
 
-  const { data, count: remainingQuestionsCount, error } = await filteredQuery;
+  const { data, error } = await filteredQuery;
 
-  const count = remainingQuestionsCount
-    ? questionIndex + remainingQuestionsCount
-    : null;
-  const dataWithPreviousAndNext =
-    data?.length === 2 ? [undefined, ...data] : data;
+  if (!data) {
+    throw new Error();
+  }
 
-  return { count, data: dataWithPreviousAndNext };
+  const dataWithPreviousAndNext = data.reduce<
+    ((typeof data)[number] | undefined)[]
+  >((acc, currentQuestion, index) => {
+    // current question returned first
+    if (index === 0 && currentQuestion.index === questionIndex) {
+      return [undefined, currentQuestion];
+    }
+
+    // current question returned last
+    if (index === data.length - 1 && currentQuestion.index === questionIndex) {
+      return [...acc, currentQuestion, undefined];
+    }
+
+    return [...acc, currentQuestion];
+  }, []);
+
+  return dataWithPreviousAndNext;
 };
 
 export const getSpeciesFromCategory = async (categoryId: string) => {

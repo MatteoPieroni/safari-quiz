@@ -9,6 +9,7 @@ import {
 import styles from './page.module.css';
 import { HomeIcon } from '@/components/icons/home';
 import { QuestionForm } from '@/components/question-form/question-form';
+import { ProgressBar } from '@/components/progress-bar/progress-bar';
 
 export default async function Category({
   params,
@@ -22,14 +23,11 @@ export default async function Category({
 
   const data = await getSpeciesFromQuizQuestion(quizIdOrSlug, +questionIndex);
 
-  if (!data || !data.data) {
+  if (!data) {
     return notFound();
   }
 
-  const {
-    count,
-    data: [previous, current, next],
-  } = data;
+  const [previous, current, next] = data;
 
   if (!current) {
     return notFound();
@@ -57,17 +55,10 @@ export default async function Category({
         </Link>
       </div>
 
-      <div className={styles.progress}>
-        {count && (
-          <>
-            {questionNumber}
-            <progress value={questionNumber} max={count}>
-              {questionNumber}/{count}
-            </progress>
-            {count}
-          </>
-        )}
-      </div>
+      <ProgressBar
+        quizIdOrSlug={quizIdOrSlug}
+        questionNumber={questionNumber}
+      />
 
       <Suspense>
         <QuestionForm file={file} name={name} type={hint_type} />
