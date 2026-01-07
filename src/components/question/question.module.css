@@ -23,6 +23,29 @@
     height: 1px;
     z-index: 0;
   }
+
+  &:has(:global(.result-spy)) {
+    &:before {
+      transform: scale(1000);
+      animation: circleOut 0.65s cubic-bezier(0, 0, 0.2, 1) forwards;
+    }
+  }
+
+  &:has(span:global(.success)) {
+    /* animation: scale-up-down 0.25s forwards; */
+    &:before {
+      background-color: var(--success-background);
+      color: var(--success-text);
+    }
+  }
+
+  &:has(span:global(.error)) {
+    animation: horizontal-shaking 0.5s forwards;
+    &:before {
+      background-color: var(--error-background);
+      color: var(--error-text);
+    }
+  }
 }
 
 @keyframes circleOut {
@@ -81,30 +104,6 @@
   }
   50% {
     transform: scale(1);
-  }
-}
-
-.cardError,
-.cardSuccess {
-  &:before {
-    transform: scale(1000);
-    animation: circleOut 0.65s cubic-bezier(0, 0, 0.2, 1) forwards;
-  }
-}
-
-.cardSuccess {
-  /* animation: scale-up-down 0.25s forwards; */
-  &:before {
-    background-color: var(--success-background);
-    color: var(--success-text);
-  }
-}
-
-.cardError {
-  animation: horizontal-shaking 0.5s forwards;
-  &:before {
-    background-color: var(--error-background);
-    color: var(--error-text);
   }
 }
 

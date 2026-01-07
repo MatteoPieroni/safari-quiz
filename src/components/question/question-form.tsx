@@ -2,20 +2,16 @@
 
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import FuzzySet from 'fuzzyset';
-import { Image } from '@unpic/react';
 
-import styles from './question-form.module.css';
-import { AudioIcon } from '../icons/audio';
+import styles from './question.module.css';
 import { MicIcon } from '../icons/mic';
 import type { Speech as SpeechType } from '@/utils/speech';
 
 type QuestionFormProps = {
-  file: string;
   name: string;
-  type: 'image' | 'audio' | 'track' | 'nest';
 };
 
-export const QuestionForm = ({ name, file, type }: QuestionFormProps) => {
+export const QuestionForm = ({ name }: QuestionFormProps) => {
   const [answer, setAnswer] = useState<string>('');
   const [isListening, setIsListening] = useState(false);
   const [result, setResult] = useState<'success' | 'error'>();
@@ -81,58 +77,33 @@ export const QuestionForm = ({ name, file, type }: QuestionFormProps) => {
   };
 
   return (
-    <div
-      className={`${styles.card} ${
-        result === 'success' && styles.cardSuccess
-      } ${result === 'error' && styles.cardError}`}
-    >
-      <div className={styles.question}>
-        {type === 'audio' && (
-          <div className={styles.audioContainer}>
-            <AudioIcon className={styles.audioIcon} />
-            <audio src={file} controls className={styles.audio} />
-          </div>
-        )}
-        {(type === 'image' || type === 'nest' || type === 'track') && (
-          <div>
-            <Image
-              className={styles.img}
-              layout="fullWidth"
-              src={file}
-              alt="FIX ME"
-              priority
-            />
-          </div>
-        )}
-
-        {!result && (
-          <form className={styles.form} onSubmit={handleAnswer}>
-            <div className={styles.inputAndMicContainer}>
-              <label>
-                Answer{' '}
-                <input
-                  name="answer"
-                  onChange={handleInput}
-                  value={answer}
-                  aria-disabled={isListening}
-                />
-              </label>
-              <button
-                type="button"
-                onClick={onButton}
-                className={styles.micButton}
+    <>
+      {!result ? (
+        <form className={styles.form} onSubmit={handleAnswer}>
+          <div className={styles.inputAndMicContainer}>
+            <label>
+              Answer{' '}
+              <input
+                name="question-answer"
+                onChange={handleInput}
+                value={answer}
                 aria-disabled={isListening}
-              >
-                <MicIcon />
-              </button>
-            </div>
-            <button className="" type="submit" aria-disabled={isListening}>
-              Check
+              />
+            </label>
+            <button
+              type="button"
+              onClick={onButton}
+              className={styles.micButton}
+              aria-disabled={isListening}
+            >
+              <MicIcon />
             </button>
-          </form>
-        )}
-      </div>
-      {result && (
+          </div>
+          <button className="" type="submit" aria-disabled={isListening}>
+            Check
+          </button>
+        </form>
+      ) : (
         <div className={styles.answer}>
           <p className={styles.result} tabIndex={-1} ref={resultRef}>
             {result === 'success' ? 'Correct!' : 'Wrong!'}
@@ -140,6 +111,13 @@ export const QuestionForm = ({ name, file, type }: QuestionFormProps) => {
           <strong className={styles.answerText}>{name}</strong>
         </div>
       )}
-    </div>
+      {result && (
+        <span
+          className={`result-spy ${result === 'success' ? 'success' : ''} ${
+            result === 'error' ? 'error' : ''
+          }`}
+        ></span>
+      )}
+    </>
   );
 };

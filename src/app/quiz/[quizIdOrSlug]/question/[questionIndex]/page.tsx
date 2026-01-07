@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
@@ -8,8 +7,8 @@ import {
 } from '@/data/db/server';
 import styles from './page.module.css';
 import { HomeIcon } from '@/components/icons/home';
-import { QuestionForm } from '@/components/question-form/question-form';
 import { ProgressBar } from '@/components/progress-bar/progress-bar';
+import { Question } from '@/components/question/question';
 
 export default async function Category({
   params,
@@ -60,9 +59,7 @@ export default async function Category({
         questionNumber={questionNumber}
       />
 
-      <Suspense>
-        <QuestionForm file={file} name={name} type={hint_type} />
-      </Suspense>
+      <Question file={file} name={name} type={hint_type} />
 
       <div className={styles.steppers}>
         {previous?.id ? (
