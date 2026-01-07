@@ -15,31 +15,6 @@
   color: var(--text);
 }
 
-.progress {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-weight: 500;
-}
-
-.progress progress[value] {
-  position: relative;
-  width: 100%;
-  font-weight: bold;
-  appearance: none;
-
-  &::-webkit-progress-bar {
-    border-radius: 4px;
-    background: var(--primary-background);
-  }
-
-  &::-webkit-progress-value {
-    border-radius: 4px;
-    background: var(--primary);
-  }
-}
-
 .steppers {
   display: flex;
   justify-content: space-between;
