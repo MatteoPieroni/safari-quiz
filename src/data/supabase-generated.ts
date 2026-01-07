@@ -179,7 +179,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      collection: "at" | "bc" | "yt"
+      collection: "at" | "bc" | "yt" | "bat"
       "collection-old": "old-at" | "old-yt" | "old-bc" | "at" | "bc" | "yt"
       hint_type: "audio" | "image" | "track" | "nest"
     }
@@ -309,7 +309,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      collection: ["at", "bc", "yt"],
+      collection: ["at", "bc", "yt", "bat"],
       "collection-old": ["old-at", "old-yt", "old-bc", "at", "bc", "yt"],
       hint_type: ["audio", "image", "track", "nest"],
     },
