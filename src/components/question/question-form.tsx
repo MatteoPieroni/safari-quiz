@@ -15,6 +15,7 @@ export const QuestionForm = ({ name }: QuestionFormProps) => {
   const [answer, setAnswer] = useState<string>('');
   const [isListening, setIsListening] = useState(false);
   const [result, setResult] = useState<'success' | 'error'>();
+  const [isHintShown, setIsHintShown] = useState(false);
   const resultRef = useRef<HTMLParagraphElement>(null);
   const speech = useRef<SpeechType>(null);
   const checker = useRef(FuzzySet());
@@ -76,10 +77,34 @@ export const QuestionForm = ({ name }: QuestionFormProps) => {
     setIsListening(true);
   };
 
+  const hasSuggestion = name.split(' ').at(-1) !== name;
+  const suggestion = name.split(' ').at(-1);
+  const censoredName = suggestion
+    ? name.replace(suggestion, '').replaceAll(/[a-zA-Z-']/g, '_')
+    : undefined;
+
   return (
     <>
       {!result ? (
         <form className={styles.form} onSubmit={handleAnswer}>
+          {hasSuggestion && (
+            <div>
+              <button
+                type="button"
+                onClick={() =>
+                  setIsHintShown((previousState) => !previousState)
+                }
+                className={styles.hintButton}
+              >
+                Hint ?
+              </button>
+              {isHintShown && (
+                <div>
+                  {censoredName} {suggestion}
+                </div>
+              )}
+            </div>
+          )}
           <div className={styles.inputAndMicContainer}>
             <label>
               Answer{' '}

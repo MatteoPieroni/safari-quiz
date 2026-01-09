@@ -163,6 +163,16 @@
   width: 100%;
 }
 
+.hintButton {
+  display: block;
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+  border-radius: 4px;
+  padding: 0.25rem;
+  width: auto;
+  font-size: 1em;
+}
+
 .answer {
   display: flex;
   flex-direction: column;
