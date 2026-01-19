@@ -13,7 +13,7 @@
   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
     rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 
-  &:before {
+  &:after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -25,7 +25,7 @@
   }
 
   &:has(:global(.result-spy)) {
-    &:before {
+    &:after {
       transform: scale(1000);
       animation: circleOut 0.65s cubic-bezier(0, 0, 0.2, 1) forwards;
     }
@@ -33,7 +33,7 @@
 
   &:has(span:global(.success)) {
     /* animation: scale-up-down 0.25s forwards; */
-    &:before {
+    &:after {
       background-color: var(--success-background);
       color: var(--success-text);
     }
@@ -41,7 +41,7 @@
 
   &:has(span:global(.error)) {
     animation: horizontal-shaking 0.5s forwards;
-    &:before {
+    &:after {
       background-color: var(--error-background);
       color: var(--error-text);
     }
@@ -131,7 +131,7 @@
 
 .micButton {
   width: auto;
-  border-radius: 50%;
+  border-radius: 4px;
 }
 
 .img {
@@ -189,4 +189,27 @@
   font-size: 1.5em;
   background-color: var(--button-background);
   color: var(--button-text);
+}
+
+.listeningForm {
+  position: relative;
+}
+
+.listeningForm::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.listeningContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 25%;
+  height: auto;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 }

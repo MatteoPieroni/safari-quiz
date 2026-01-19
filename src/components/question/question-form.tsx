@@ -6,6 +6,7 @@ import FuzzySet from 'fuzzyset';
 import styles from './question.module.css';
 import { MicIcon } from '../icons/mic';
 import type { Speech as SpeechType } from '@/utils/speech';
+import { ListeningIcon } from '../icons/listening';
 
 type QuestionFormProps = {
   name: string;
@@ -86,7 +87,10 @@ export const QuestionForm = ({ name }: QuestionFormProps) => {
   return (
     <>
       {!result ? (
-        <form className={styles.form} onSubmit={handleAnswer}>
+        <form
+          className={`${styles.form} ${isListening && styles.listeningForm}`}
+          onSubmit={handleAnswer}
+        >
           {hasSuggestion && (
             <div>
               <button
@@ -95,6 +99,7 @@ export const QuestionForm = ({ name }: QuestionFormProps) => {
                   setIsHintShown((previousState) => !previousState)
                 }
                 className={styles.hintButton}
+                aria-disabled={isListening}
               >
                 Hint ?
               </button>
@@ -107,7 +112,7 @@ export const QuestionForm = ({ name }: QuestionFormProps) => {
           )}
           <div className={styles.inputAndMicContainer}>
             <label>
-              Answer{' '}
+              Answer
               <input
                 name="question-answer"
                 onChange={handleInput}
@@ -124,6 +129,11 @@ export const QuestionForm = ({ name }: QuestionFormProps) => {
               <MicIcon />
             </button>
           </div>
+          {isListening && (
+            <span className={styles.listeningContainer}>
+              <ListeningIcon />
+            </span>
+          )}
           <button className="" type="submit" aria-disabled={isListening}>
             Check
           </button>
