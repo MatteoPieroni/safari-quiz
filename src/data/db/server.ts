@@ -80,11 +80,9 @@ export const getSpeciesFromQuizQuestion = async (
     const previousQuestionIndex = questionIndex - 1;
     const nextQuestionIndex = questionIndex + 1;
 
-    filteredQuery = queryFilteredByQuiz
-      .or(
-        `index.eq.${previousQuestionIndex},index.eq.${questionIndex},index.eq.${nextQuestionIndex}`
-      )
-      .order('index');
+    filteredQuery = queryFilteredByQuiz.or(
+      `index.eq.${previousQuestionIndex},index.eq.${questionIndex},index.eq.${nextQuestionIndex}`
+    );
   }
 
   const { data, error } = await filteredQuery;
@@ -93,7 +91,11 @@ export const getSpeciesFromQuizQuestion = async (
     throw new Error();
   }
 
-  const dataWithPreviousAndNext = data.reduce<
+  const orderedData = data.sort(
+    (previous, next) => previous.index - next.index
+  );
+
+  const dataWithPreviousAndNext = orderedData.reduce<
     ((typeof data)[number] | undefined)[]
   >((acc, currentQuestion, index) => {
     // current question returned first
